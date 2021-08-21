@@ -12,14 +12,14 @@ pre {
  comes at the line level so that background
  colors extend edge to edge.
 */
-pre code .torchlight {
+pre code {
     @apply block py-4 min-w-max;
 }
 
 /*
  Horizontal line padding.
 */
-pre code .torchlight .line {
+pre code .line {
     @apply px-4;
 }
 
@@ -27,7 +27,7 @@ pre code .torchlight .line {
  Push the code away from the line numbers and
  summary caret indicators.
 */
-pre code .torchlight .line-number,
-pre code .torchlight .summary-caret {
+pre code .line-number,
+pre code .summary-caret {
     @apply mr-4;
 }
