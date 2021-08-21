@@ -41,7 +41,7 @@ module.exports = {
     highlight: {
         // Directory where your un-highlighted source files live. If
         // left blank, Torchlight will use the current directory.
-        input: '.next/server',
+        input: '.next/server/pages/posts',
 
         // Directory where your highlighted files should be placed. If
         // left blank, files will be modified in place.
@@ -51,7 +51,6 @@ module.exports = {
         includeGlobs: [
             '**/*.htm',
             '**/*.html',
-            '**/*.js'
         ],
 
         // String patterns to ignore (not globs). The entire file
