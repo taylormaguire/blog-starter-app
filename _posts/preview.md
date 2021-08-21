@@ -1,19 +1,57 @@
 ---
-title: 'Preview Mode for Static Generation'
+title: 'Laravel and Digital Ocean Spaces Storage'
 excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus.'
 coverImage: '/assets/blog/preview/cover.jpg'
 date: '2020-03-16T05:35:07.322Z'
 author:
   name: Joe Haddad
-  picture: '/assets/blog/authors/joe.jpeg'
+  picture: 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4099f5bd-ac53-4a90-bdc6-2e6fda7d907d/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210821%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210821T063818Z&X-Amz-Expires=86400&X-Amz-Signature=55585a9575ada0539b515354fa20bbb992c3649bad0f7d5ca7dbbe41838f8906&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22'
 ogImage:
-  url: '/assets/blog/preview/cover.jpg'
+  url: 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4099f5bd-ac53-4a90-bdc6-2e6fda7d907d/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210821%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210821T063818Z&X-Amz-Expires=86400&X-Amz-Signature=55585a9575ada0539b515354fa20bbb992c3649bad0f7d5ca7dbbe41838f8906&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22'
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus. Praesent elementum facilisis leo vel fringilla. Congue mauris rhoncus aenean vel. Egestas sed tempus urna et pharetra pharetra massa massa ultricies.
+Using Composer install the S3 Storage Driver
 
-Venenatis cras sed felis eget velit. Consectetur libero id faucibus nisl tincidunt. Gravida in fermentum et sollicitudin ac orci phasellus egestas tellus. Volutpat consequat mauris nunc congue nisi vitae. Id aliquet risus feugiat in ante metus dictum at tempor. Sed blandit libero volutpat sed cras. Sed odio morbi quis commodo odio aenean sed adipiscing. Velit euismod in pellentesque massa placerat. Mi bibendum neque egestas congue quisque egestas diam in arcu. Nisi lacus sed viverra tellus in. Nibh cras pulvinar mattis nunc sed. Luctus accumsan tortor posuere ac ut consequat semper viverra. Fringilla ut morbi tincidunt augue interdum velit euismod.
+```bash
+composer require league/flysystem-aws-s3-v3
+```
 
-## Lorem Ipsum
+For performance it is recommended to use a cached adapter.
 
-Tristique senectus et netus et malesuada fames ac turpis. Ridiculous mus mauris vitae ultricies leo integer malesuada nunc vel. In mollis nunc sed id semper. Egestas tellus rutrum tellus pellentesque. Phasellus vestibulum lorem sed risus ultricies tristique nulla. Quis blandit turpis cursus in hac habitasse platea dictumst quisque. Eros donec ac odio tempor orci dapibus ultrices. Aliquam sem et tortor consequat id porta nibh. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla. Diam vulputate ut pharetra sit amet. Ut tellus elementum sagittis vitae et leo. Arcu non odio euismod lacinia at quis risus sed vulputate.
+```bash
+composer require league/flysystem-cached-adapter
+```
+
+Open the `config/filesystems.php` configuration file. After the S3 driver array configuration add the following code:
+
+```bash
+'spaces' => [
+    'driver' => 's3',
+    'key' => env('DO_SPACES_KEY'),
+    'secret' => env('DO_SPACES_SECRET'),
+    'endpoint' => env('DO_SPACES_ENDPOINT'),
+    'region' => env('DO_SPACES_REGION'),
+    'bucket' => env('DO_SPACES_BUCKET'),
+],
+```
+
+Then add the following details to your `.env` file with the corresponding Digital Ocean API details
+
+```bash
+DO_SPACES_KEY=[API_KEY]
+DO_SPACES_SECRET=[API_SECRET]
+DO_SPACES_ENDPOINT=[API_ENDPOINT]
+DO_SPACES_REGION=[API_REGION]
+DO_SPACES_BUCKET=[API_BUCKET]
+```
+Now you can use the Laravel Storage system as normal, be sure to specify the location of the storage, as `disk('spaces')` as seen in the example below, here's an example test you can add to your routes `web.php` file.
+
+```bash
+Route::get('/file-upload', function () {
+    return Storage::disk('spaces')->get('file.txt', 'Contents belong here');
+});
+
+Route::get('/files-read', function () {
+    return Storage::disk('spaces')->get('file.txt');
+});
+```
