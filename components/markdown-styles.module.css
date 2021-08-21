@@ -16,3 +16,37 @@
 .markdown h3 {
   @apply text-2xl mt-8 mb-4 leading-snug;
 }
+
+/*
+ Margin and rounding are personal preferences,
+ overflow-x-auto is recommended.
+*/
+.markdown pre {
+  @apply my-4 rounded overflow-x-auto;
+}
+
+/*
+ Add some vertical padding and expand the width
+ to fill its container. The horizontal padding
+ comes at the line level so that background
+ colors extend edge to edge.
+*/
+.markdown pre code {
+  @apply block py-4 min-w-max;
+}
+
+/*
+ Horizontal line padding.
+*/
+.markdown pre code .line {
+  @apply px-4;
+}
+
+/*
+ Push the code away from the line numbers and
+ summary caret indicators.
+*/
+.markdown pre code .line-number,
+.markdown pre code .summary-caret {
+  @apply mr-4;
+}
