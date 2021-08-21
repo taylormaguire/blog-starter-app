@@ -11,7 +11,7 @@ module.exports = {
 
     // Which theme you want to use. You can find all of the themes at
     // https://torchlight.dev/docs/themes.
-    theme: 'material-theme-default',
+    theme: 'material-theme-palenight',
 
     // The Host of the API.
     host: 'https://api.torchlight.dev',
