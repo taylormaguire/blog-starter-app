@@ -41,7 +41,7 @@ module.exports = {
     highlight: {
         // Directory where your un-highlighted source files live. If
         // left blank, Torchlight will use the current directory.
-        input: 'out',
+        input: '.next/server',
 
         // Directory where your highlighted files should be placed. If
         // left blank, files will be modified in place.
